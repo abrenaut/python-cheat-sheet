@@ -80,6 +80,25 @@ for name, color in zip(name, colors):
     print name, '-->', color
 ```
 
+### Nested loops
+
+_[itertools.product(*iterables, repeat=1)](https://docs.python.org/3/library/itertools.html#itertools.product)_: Cartesian product of input iterables.
+
+```python
+names = ['raymond', 'rachel', 'matthew']
+colors = ['red', 'green', 'blue', 'yellow']
+
+for name in names:
+    for color in colors:
+         print(name, color)
+
+# the python way
+from itertools import product
+products = product(names, colors)
+for name, color in products:
+...     print(name, color)
+```
+
 ### Looping in sorted order
 
 _[sorted(iterable[, key][, reverse])](https://docs.python.org/3/library/functions.html#sorted)_
@@ -406,3 +425,16 @@ with ignored(OSError):
 ## Concise Expressive One-Liners
 
 > One logical line of code equals one sentence in English
+
+## Built-ins
+
+### Replace multiple OR statements
+
+_[any(iterable)](https://docs.python.org/3/library/functions.html#any)_
+
+```python
+data = [1, 2, 3, 4]
+
+if any(x > 3 for x in data):
+    print('Un élément est supérieur à 3')
+```
