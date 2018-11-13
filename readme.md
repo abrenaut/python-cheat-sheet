@@ -90,13 +90,13 @@ colors = ['red', 'green', 'blue', 'yellow']
 
 for name in names:
     for color in colors:
-         print(name, color)
+        print(name, color)
 
 # the python way
 from itertools import product
 products = product(names, colors)
 for name, color in products:
-...     print(name, color)
+    print(name, color)
 ```
 
 ### Looping in sorted order
@@ -428,13 +428,93 @@ with ignored(OSError):
 
 ## Built-ins
 
-### Replace multiple OR statements
+### Replace multiple OR / AND statements
 
 _[any(iterable)](https://docs.python.org/3/library/functions.html#any)_
+_[all(iterable)](https://docs.python.org/3/library/functions.html#all)_
 
 ```python
 data = [1, 2, 3, 4]
 
 if any(x > 3 for x in data):
-    print('Un élément est supérieur à 3')
+    print('An element is bigger than 3')
+if all(x > 0 for x in data):
+    print('All elements are bigger than 0')
+```
+
+## Asterisks in Python
+
+From Trey Hunner's [Asterisks in Python: what they are and how to use them](https://treyhunner.com/2018/10/asterisks-in-python-what-they-are-and-how-to-use-them/)
+
+> Python’s * and ** operators aren’t just syntactic sugar. Some of the things they allow you to do could be achieved through other means, but the alternatives to * and ** tend to be more cumbersome and more resource intensive.
+
+### Asterisks for unpacking into function call
+
+```python
+fruits = ['lemon', 'pear', 'watermelon', 'tomato']
+print(*fruits)
+# output: lemon pear watermelon tomato
+```
+
+```python
+# The ** operator does something similar, but with keyword arguments
+date_info = {'year': "2020", 'month': "01", 'day': "01"}
+filename = "{year}-{month}-{day}.txt".format(**date_info)
+```
+
+### Asterisks for packing arguments given to function
+
+```python
+from random import randint
+
+def roll(*dice):
+    return sum(randint(1, die) for die in dice)
+
+roll(6, 6)
+# output: 9
+```
+
+```python
+# we can use ** when defining a function to capture any keyword arguments given to the function into a dictionary
+def tag(tag_name, **attributes):
+    attribute_list = [
+        f'{name}="{value}"'
+        for name, value in attributes.items()
+    ]
+    return f"<{tag_name} {' '.join(attribute_list)}>"
+tag('a', href="http://treyhunner.com")
+# output: '<a href="http://treyhunner.com">'
+```
+
+### Asterisks in tuple unpacking
+
+```python
+numbers = [1, 2, 3, 4, 5, 6]
+first, *rest = numbers
+print(rest)
+# output: [2, 3, 4, 5, 6]
+```
+
+### Asterisks in list literals
+
+```python
+# use * to dump an iterable into a new list
+fruits = ['lemon', 'pear', 'watermelon', 'tomato']
+uppercase_fruits = (f.upper() for f in fruits)
+[*fruits, *uppercase_fruits]
+# output: ['lemon', 'pear', 'watermelon', 'tomato', 'LEMON', 'PEAR', 'WATERMELON', 'TOMATO']
+```
+
+```python
+# use * to dump a dictionary into a new dictionary
+date_info = {'year': "2020", 'month': "01", 'day': "01"}
+track_info = {'artist': "Beethoven", 'title': 'Symphony No 5'}
+{**date_info, **track_info}
+# output: {'year': '2020', 'month': '01', 'day': '01', 'artist': 'Beethoven', 'title': 'Symphony No 5'}
+
+# merge dictionaries while overriding particular values
+event_info = {'year': '2020', 'month': '01', 'day': '7', 'group': 'Python Meetup'}
+new_info = {**event_info, 'day': "14"}
+new_info
+# output: {'year': '2020', 'month': '01', 'day': '14', 'group': 'Python Meetup'}
 ```
